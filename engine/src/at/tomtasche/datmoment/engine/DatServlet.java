@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.Channels;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,7 +29,6 @@ import com.google.gson.JsonObject;
 
 @SuppressWarnings("serial")
 public class DatServlet extends HttpServlet {
-    private static final Logger log = Logger.getLogger(DatServlet.class.getName());
     private static final Gson GSON = new Gson();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -51,12 +49,7 @@ public class DatServlet extends HttpServlet {
 		FileItemStream item = iterator.next();
 		InputStream stream = item.openStream();
 
-		if (item.isFormField()) {
-		    log.warning("Got a form field: " + item.getFieldName());
-		} else {
-		    log.warning("Got an uploaded file: " + item.getFieldName() + ", name = "
-			    + item.getName());
-
+		if (!item.isFormField()) {
 		    FileService fileService = FileServiceFactory.getFileService();
 		    AppEngineFile file = fileService.createNewBlobFile("image/jpg");
 
@@ -73,7 +66,6 @@ public class DatServlet extends HttpServlet {
 		    writeChannel.closeFinally();
 
 		    BlobKey key = fileService.getBlobKey(file);
-		    log.warning(key.toString());
 		    Queue queue = QueueFactory.getDefaultQueue();
 		    queue.add(TaskOptions.Builder.withUrl("/worker")
 			    .param("key", key.getKeyString()).countdownMillis(600000));

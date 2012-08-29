@@ -15,7 +15,7 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 public class DatWorker extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
 	if (request.getParameter("key") == null)
 	    return;
