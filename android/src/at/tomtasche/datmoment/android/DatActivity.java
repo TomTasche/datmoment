@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -68,7 +69,7 @@ public class DatActivity extends Activity {
 	buttonUpload.setEnabled(false);
 
 	new Thread() {
-	    
+
 	    @SuppressWarnings("unchecked")
 	    public void run() {
 		HttpClient httpclient = new DefaultHttpClient();
